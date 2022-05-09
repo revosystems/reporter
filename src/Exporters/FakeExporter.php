@@ -56,7 +56,7 @@ class FakeExporter extends BaseExporter
         $this->rows = [];
         $this->forEachRecord(function ($row) {
             $this->rows[] = collect($this->getExportFields())->mapWithKeys(function ($field) use ($row) {
-                return [ $field->getTitle() => $field->getValue($row)];
+                return [ $field->getTitle() => $field->getValue($row, false)];
             });
         });
     }
