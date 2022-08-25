@@ -32,6 +32,11 @@ class XlsExporter extends BaseExporter
         Excel::store($this->exportData, $filename);
     }
 
+    public function raw(string $writerType = \Maatwebsite\Excel\Excel::XLSX): string
+    {
+        return Excel::raw($this->exportData, $writerType);
+    }
+
     public function init()
     {
     }
