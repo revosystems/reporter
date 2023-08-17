@@ -7,6 +7,7 @@ use BadChoice\Reports\DataTransformers\ReportDataTransformer;
 use BadChoice\Reports\DataTransformers\Transformers\ApiDecimal;
 use BadChoice\Reports\DataTransformers\Transformers\ApiWeightDecimal;
 use BadChoice\Reports\DataTransformers\Transformers\Currency;
+use BadChoice\Reports\DataTransformers\Transformers\Datetime;
 use BadChoice\Reports\DataTransformers\Transformers\Decimal;
 use BadChoice\Reports\DataTransformers\Transformers\Percentage;
 use BadChoice\Reports\DataTransformers\Transformers\WeightDecimal;
@@ -22,6 +23,7 @@ class ApiExporter extends BaseExporter
         app()->bind(Percentage::class, ApiDecimal::class);
         app()->bind(WeightDecimal::class, ApiWeightDecimal::class);
         app()->bind(ReportDataTransformer::class, ApiReportDataTransformer::class);
+        app()->bind(Datetime::class, ApiDatetime::class);
     }
 
     public function export()
