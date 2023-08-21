@@ -50,7 +50,7 @@ class QueryUrl
             if (is_array($value)){
                 return $this->generateMultipleQueryString($key, $value);
             }
-            return "{$key}=" .  urlencode($value);
+            return "{" . urlencode($key) . "}=" .  urlencode($value);
         })->implode('&');
     }
 
@@ -69,7 +69,7 @@ class QueryUrl
     private function generateMultipleQueryString($key, $values)
     {
         return collect($values)->map(function($value) use($key){
-            return "{$key}[]=" . urlencode($value);
+            return "{" . urlencode($key) . "[]=" . urlencode($value);
         })->implode("&");
     }
 }
