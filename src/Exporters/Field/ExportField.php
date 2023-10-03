@@ -114,6 +114,21 @@ class ExportField
         return $value;
     }
 
+    public function toCsv($row)
+    {
+        $value = $this->getValue($row);
+
+        if (is_string($value)) {
+            return preg_replace('/\s+/', '', trim($value));
+        }
+
+        if (is_array($value)) {
+            return implode(',', $value);
+        }
+
+        return $value;
+    }
+
     public function isNumeric()
     {
         return collect($this->transformation)->values()->filter(function ($value) {
