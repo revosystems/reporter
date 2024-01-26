@@ -55,18 +55,22 @@ trait DateFiltersTrait
     }
 
     public function start_time($time = null)
-    {
+    {   
+        $timezone = auth()->user()->timezone;
+
         if (! $this->dateField || ! $time) {
             return $this->builder;
         }
-        return $this->builder->whereRaw("TIME(DATE_ADD(" . $this->rawDateField() . ", INTERVAL {$this->offsetHours} HOUR)) > '{$time}'");
+        return $this->builder->whereRaw("CONVERT_TZ({$this->rawDateField()}, 'UTC', {$timezone}) > CONCAT(DATE({$this->rawDateField()}), ' {$time}')");
     }
 
     public function end_time($time = null)
     {
+        $timezone = auth()->user()->timezone;
+
         if (! $this->dateField || ! $time) {
             return $this->builder;
         }
-        return $this->builder->whereRaw("TIME(DATE_ADD(" . $this->rawDateField() . ", INTERVAL {$this->offsetHours} HOUR)) < '{$time}'");
+        return $this->builder->whereRaw("CONVERT_TZ({$this->rawDateField()}, 'UTC', {$timezone}) < CONCAT(DATE({$this->rawDateField()}), ' {$time}')");
     }
 }
