@@ -23,7 +23,7 @@ trait DateFiltersTrait
         if (! $this->dateField || isset($this->filters()['date'])) {
             return $this->builder;
         }
-        
+
         $timezone = auth()->user()->timezone;
         return $this->builder->whereRaw("SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}') > '{$date}'");
     }
@@ -61,7 +61,7 @@ trait DateFiltersTrait
         if (! $this->dateField || ! $time) {
             return $this->builder;
         }
-        return $this->builder->whereRaw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') > CONCAT(DATE({$this->rawDateField()}), '{$time}')");
+        return $this->builder->whereRaw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') > CONCAT(DATE({$this->rawDateField()}), ' {$time}')");
     }
 
     public function end_time($time = null)
@@ -71,6 +71,6 @@ trait DateFiltersTrait
         if (! $this->dateField || ! $time) {
             return $this->builder;
         }
-        return $this->builder->whereRaw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') < CONCAT(DATE({$this->rawDateField()}), '{$time}')");
+        return $this->builder->whereRaw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') < CONCAT(DATE({$this->rawDateField()}), ' {$time}')");
     }
 }
