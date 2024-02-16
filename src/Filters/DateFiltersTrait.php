@@ -23,9 +23,9 @@ trait DateFiltersTrait
         if (! $this->dateField || isset($this->filters()['date'])) {
             return $this->builder;
         }
-        $date = $date ? : Carbon::parse('first day of this month')->toDateString();
-        $date = Carbon::parse($date . " " . $this->openingTime)->subHours($this->offsetHours);   //Start day at opening time - timezone offsetHours
-        return $this->builder->where($this->dateField, '>', $date);
+
+        $timezone = auth()->user()->timezone;
+        return $this->builder->whereRaw("SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}') > '{$date}'");
     }
 
     public function end_date($date = null)
@@ -33,9 +33,9 @@ trait DateFiltersTrait
         if (! $this->dateField || isset($this->filters()['date'])) {
             return $this->builder;
         }
-        $date = $date ? : Carbon::today()->toDateString();
-        $date = Carbon::parse($date . " " . $this->openingTime)->addDay()->subHours($this->offsetHours); //End day +1 at opening time - timezone offsetHours
-        return $this->builder->where($this->dateField, '<', $date);
+
+        $timezone = auth()->user()->timezone;
+        return $this->builder->whereRaw("SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}') < '{$date}'");
     }
 
     public function dayOfWeek($weekdays = null)
@@ -55,18 +55,22 @@ trait DateFiltersTrait
     }
 
     public function start_time($time = null)
-    {
+    {   
+        $timezone = auth()->user()->timezone;
+
         if (! $this->dateField || ! $time) {
             return $this->builder;
         }
-        return $this->builder->whereRaw("TIME(DATE_ADD(" . $this->rawDateField() . ", INTERVAL {$this->offsetHours} HOUR)) > '{$time}'");
+        return $this->builder->whereRaw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') > CONCAT(DATE({$this->rawDateField()}), ' {$time}')");
     }
 
     public function end_time($time = null)
     {
+        $timezone = auth()->user()->timezone;
+
         if (! $this->dateField || ! $time) {
             return $this->builder;
         }
-        return $this->builder->whereRaw("TIME(DATE_ADD(" . $this->rawDateField() . ", INTERVAL {$this->offsetHours} HOUR)) < '{$time}'");
+        return $this->builder->whereRaw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') < CONCAT(DATE({$this->rawDateField()}), ' {$time}')");
     }
 }
