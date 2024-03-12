@@ -25,7 +25,7 @@ trait DateFiltersTrait
         }
 
         $timezone = auth()->user()->timezone;
-        return $this->builder->where(DB::raw("SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}') > '{$date}'"));
+        return $this->builder->where(fn() => DB::raw("SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}') > '{$date}'"));
     }
 
     public function end_date($date = null)
@@ -35,7 +35,7 @@ trait DateFiltersTrait
         }
 
         $timezone = auth()->user()->timezone;
-        return $this->builder->where(DB::raw("SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}') < '{$date}'"));
+        return $this->builder->where(fn() => DB::raw("SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}') < '{$date}'"));
     }
 
     public function dayOfWeek($weekdays = null)
@@ -61,7 +61,7 @@ trait DateFiltersTrait
         if (! $this->dateField || ! $time) {
             return $this->builder;
         }
-        return $this->builder->where(DB::raw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') > CONCAT(DATE({$this->rawDateField()}), ' {$time}')"));
+        return $this->builder->where(fn() => DB::raw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') > CONCAT(DATE({$this->rawDateField()}), ' {$time}')"));
     }
 
     public function end_time($time = null)
@@ -71,6 +71,6 @@ trait DateFiltersTrait
         if (! $this->dateField || ! $time) {
             return $this->builder;
         }
-        return $this->builder->where(DB::raw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') < CONCAT(DATE({$this->rawDateField()}), ' {$time}')"));
+        return $this->builder->where(fn() => DB::raw("CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}') < CONCAT(DATE({$this->rawDateField()}), ' {$time}')"));
     }
 }
