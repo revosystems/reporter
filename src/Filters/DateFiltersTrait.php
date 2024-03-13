@@ -25,7 +25,7 @@ trait DateFiltersTrait
         }
 
         $timezone = auth()->user()->timezone;
-        return $this->builder->where(DB::raw("SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}')"), ">", $date);
+        return $this->builder->where(DB::raw("DATE(SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}'))"), ">=", $date);
     }
 
     public function end_date($date = null)
@@ -35,7 +35,7 @@ trait DateFiltersTrait
         }
 
         $timezone = auth()->user()->timezone;
-        return $this->builder->where(DB::raw("SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}')"), "<",  $date);
+        return $this->builder->where(DB::raw("DATE(SUBTIME(CONVERT_TZ({$this->rawDateField()}, 'UTC', '{$timezone}'), '{$this->openingTime}'))"), "<=",  $date);
     }
 
     public function dayOfWeek($weekdays = null)
