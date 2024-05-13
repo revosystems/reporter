@@ -5,6 +5,7 @@ namespace BadChoice\Reports\Filters;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 
 class DefaultFilters extends QueryFilters
 {
