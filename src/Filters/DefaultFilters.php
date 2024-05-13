@@ -194,9 +194,17 @@ class DefaultFilters extends QueryFilters
         if ($value === null) {
             return $this->builder;
         }
+        if ($value instanceof Collection) {
+            if ($value->filter()->count() > 0) {
+                 $this->builder->whereIn($this->composedKey($key), $value->filter()->all());
+            }
+            return;
+        }
+
         if (is_array($value)) {
             return $this->builder->whereIn($this->composedKey($key), $value);
         }
+
         return $this->builder->where($this->composedKey($key), $comparison, $value);
     }
 
