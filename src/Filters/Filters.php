@@ -58,7 +58,6 @@ class Filters
 
     public function clearEmptyFilters($filters) : array{
         return collect($filters)->mapWithKeys(function($value, $key){
-            if ($value == null) { return [];}
             if (is_array($value) && count(array_filter($value)) == 0) {
                 return [];
             }
