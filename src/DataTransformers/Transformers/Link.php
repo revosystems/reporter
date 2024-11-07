@@ -22,7 +22,7 @@ class Link implements TransformsRowInterface
             }
             $text = $this->getDisplayText($transformData);
         }
-        return "<a {$attributes} class='{$class}' href='" . url($link) . "'>{$text}</a>";
+        return "<a {$attributes} class='text-blue-400 {$class}' href='" . url($link) . "'>{$text}</a>";
     }
 
     public function setRow($row, $defaultValue = null)
